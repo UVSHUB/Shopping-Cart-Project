@@ -157,6 +157,113 @@ router.post('/oauth-login', async (req: Request, res: Response): Promise<any> =>
   }
 });
 
+// 3a. Real Google OAuth Verification
+router.post('/google-login', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({ message: 'Google Credential (ID Token) is required' });
+    }
+
+    // Verify token using Google tokeninfo API
+    const response = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+    if (!response.ok) {
+      return res.status(400).json({ message: 'Invalid Google token' });
+    }
+
+    const payload = await response.json();
+    const { email, name, aud } = payload;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Google account does not provide email' });
+    }
+
+    // Verify aud matches expected client ID if configured
+    const expectedAud = process.env.GOOGLE_CLIENT_ID;
+    if (expectedAud && aud !== expectedAud) {
+      return res.status(400).json({ message: 'Token audience mismatch' });
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const role = email.toLowerCase().endsWith('@smartcart.admin') ? 'admin' : 'customer';
+      user = new User({
+        name: name || email.split('@')[0],
+        email,
+        phone: '0000000000', // default mock phone
+        role
+      });
+      await user.save();
+    }
+
+    const token = generateToken(user);
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// 3b. Real Facebook OAuth Verification
+router.post('/facebook-login', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { accessToken } = req.body;
+
+    if (!accessToken) {
+      return res.status(400).json({ message: 'Facebook Access Token is required' });
+    }
+
+    // Verify token and fetch user details from Facebook Graph API
+    const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${accessToken}`);
+    if (!response.ok) {
+      return res.status(400).json({ message: 'Invalid Facebook access token' });
+    }
+
+    const payload = await response.json();
+    const { id, name, email } = payload;
+
+    // Use facebook email, or fallback to mock email if not present
+    const userEmail = email || `${id}@facebook.com`;
+
+    let user = await User.findOne({ email: userEmail });
+
+    if (!user) {
+      const role = userEmail.toLowerCase().endsWith('@smartcart.admin') ? 'admin' : 'customer';
+      user = new User({
+        name: name || 'Facebook User',
+        email: userEmail,
+        phone: '0000000000', // default mock phone
+        role
+      });
+      await user.save();
+    }
+
+    const token = generateToken(user);
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // 4. Passkey Registration Options
 router.post('/passkey/register-options', async (req: Request, res: Response): Promise<any> => {
   try {
