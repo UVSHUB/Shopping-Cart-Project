@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { ArrowLeft, CheckCircle2, ShieldCheck, CreditCard, Sparkles, ShoppingBag } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { motion } from 'framer-motion';
 
 export const Checkout: React.FC = () => {
   const { user, token } = useAuth();
@@ -15,6 +16,12 @@ export const Checkout: React.FC = () => {
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '0762127717');
   const [address, setAddress] = useState('Sri lanka 108 nagahawatta Road maharagama');
+
+  // Demo Card States
+  const [cardName, setCardName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExpiry, setCardExpiry] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
 
   const [paymentMethod, setPaymentMethod] = useState('test'); // default to test mode
   const [error, setError] = useState('');
@@ -49,10 +56,34 @@ export const Checkout: React.FC = () => {
       return;
     }
 
+    if (paymentMethod === 'card') {
+      if (!cardName || !cardNumber || !cardExpiry || !cardCvv) {
+        setError('Please fill in all credit card details.');
+        return;
+      }
+      const cleanCard = cardNumber.replace(/\s+/g, '');
+      if (cleanCard.length !== 16 || isNaN(Number(cleanCard))) {
+        setError('Please enter a valid 16-digit card number.');
+        return;
+      }
+      if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+        setError('Please enter expiry in MM/YY format.');
+        return;
+      }
+      if (cardCvv.length !== 3 || isNaN(Number(cardCvv))) {
+        setError('Please enter a valid 3-digit CVV.');
+        return;
+      }
+    }
+
     setProcessing(true);
     setError('');
 
     try {
+      if (paymentMethod === 'card') {
+        // Simulate credit card authorization gateway response delay
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+      }
       const orderProducts = items.map((item) => ({
         productId: item.productId._id,
         name: item.productId.name,
@@ -271,25 +302,115 @@ export const Checkout: React.FC = () => {
               </label>
 
               {/* Credit card gateway */}
-              <div className="flex items-center gap-3.5 p-4 rounded-2xl border border-app-border/40 opacity-60">
-                <input
-                  type="radio"
-                  name="payment"
-                  disabled
-                  className="h-4.5 w-4.5"
-                />
-                <div className="flex-1 flex justify-between items-center">
-                  <div>
+              <div 
+                className={`flex flex-col gap-3.5 p-4 rounded-2xl border transition-all ${
+                  paymentMethod === 'card' 
+                    ? 'border-primary/30 bg-primary/5' 
+                    : 'border-app-border/40 hover:border-primary/20'
+                }`}
+              >
+                <label className="flex items-center gap-3.5 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    checked={paymentMethod === 'card'}
+                    onChange={() => setPaymentMethod('card')}
+                    className="text-primary focus:ring-primary h-4.5 w-4.5"
+                  />
+                  <div className="flex-1">
                     <span className="text-sm font-semibold text-app-text flex items-center gap-1.5">
-                      <CreditCard className="h-4.5 w-4.5" />
-                      Credit / Debit Card
+                      <CreditCard className="h-4.5 w-4.5 text-primary" />
+                      Demo Credit / Debit Card
                     </span>
-                    <p className="text-xs text-gray-500">Secure checkout with Stripe.</p>
+                    <p className="text-xs text-gray-500 font-medium">Verify sandbox gateway logic using a test card.</p>
                   </div>
-                  <span className="text-[10px] font-bold bg-gray-200 dark:bg-slate-800 text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                    Coming Soon
-                  </span>
-                </div>
+                </label>
+
+                {paymentMethod === 'card' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="pt-3.5 border-t border-app-border/50 space-y-3"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Card Details</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCardName(name || 'Customer Joe');
+                          setCardNumber('4242 4242 4242 4242');
+                          setCardExpiry('12/28');
+                          setCardCvv('123');
+                        }}
+                        className="text-[10px] font-extrabold text-primary hover:underline"
+                      >
+                        Auto-fill Test Card
+                      </button>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-gray-450 uppercase">Name on Card</label>
+                        <input
+                          type="text"
+                          required
+                          value={cardName}
+                          onChange={(e) => setCardName(e.target.value)}
+                          className="w-full px-4 py-2 rounded-xl glass-input text-xs text-app-text"
+                          placeholder="e.g. John Doe"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-gray-450 uppercase">Card Number</label>
+                        <input
+                          type="text"
+                          required
+                          maxLength={19}
+                          value={cardNumber}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '');
+                            const formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+                            setCardNumber(formatted);
+                          }}
+                          className="w-full px-4 py-2 rounded-xl glass-input text-xs text-app-text font-mono"
+                          placeholder="4242 4242 4242 4242"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-gray-450 uppercase">Expiry (MM/YY)</label>
+                          <input
+                            type="text"
+                            required
+                            maxLength={5}
+                            value={cardExpiry}
+                            onChange={(e) => {
+                              const val = e.target.value.replace(/\D/g, '');
+                              const formatted = val.length > 2 ? `${val.slice(0, 2)}/${val.slice(2, 4)}` : val;
+                              setCardExpiry(formatted);
+                            }}
+                            className="w-full px-4 py-2 rounded-xl glass-input text-xs text-app-text font-mono"
+                            placeholder="12/28"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-gray-450 uppercase">CVV / CVC</label>
+                          <input
+                            type="password"
+                            required
+                            maxLength={3}
+                            value={cardCvv}
+                            onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, ''))}
+                            className="w-full px-4 py-2 rounded-xl glass-input text-xs text-app-text font-mono"
+                            placeholder="123"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </div>
           </div>
