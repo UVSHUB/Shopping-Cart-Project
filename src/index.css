@@ -43,16 +43,15 @@
   accent-color: #16a34a;
 }
 
-/* Fallback for browsers without light-dark() support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: var(--bg-dark);
-    --text: var(--text-dark);
-    --border: var(--border-dark);
-    --card-bg: var(--card-bg-dark);
-    --scrollbar-thumb: var(--scrollbar-thumb-dark);
-    --scrollbar-track: var(--scrollbar-track-dark);
-  }
+/* Apply dark theme styles when color-scheme is dark or html has class .dark */
+:root[style*="color-scheme: dark"],
+html.dark {
+  --bg: var(--bg-dark);
+  --text: var(--text-dark);
+  --border: var(--border-dark);
+  --card-bg: var(--card-bg-dark);
+  --scrollbar-thumb: var(--scrollbar-thumb-dark);
+  --scrollbar-track: var(--scrollbar-track-dark);
 }
 
 body {

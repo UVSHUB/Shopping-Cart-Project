@@ -14,9 +14,9 @@
       // Avoid FOUC (Flash of Unstyled Content) by setting theme early
       {
         const colorScheme = localStorage.getItem("color-scheme");
-        if (colorScheme) {
-          document.documentElement.style.colorScheme = colorScheme;
-        }
+        const theme = colorScheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.style.colorScheme = theme;
+        document.documentElement.classList.add(theme);
       }
     </script>
     <!-- Google Identity Services (GIS) SDK -->

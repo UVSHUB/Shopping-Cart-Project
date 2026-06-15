@@ -22,6 +22,18 @@ export const Navbar: React.FC = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
+  // Synchronize class list and style color-scheme
+  useEffect(() => {
+    document.documentElement.style.colorScheme = theme;
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
@@ -36,7 +48,6 @@ export const Navbar: React.FC = () => {
   const handleToggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
-    document.documentElement.style.colorScheme = nextTheme;
     localStorage.setItem('color-scheme', nextTheme);
   };
 

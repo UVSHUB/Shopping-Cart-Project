@@ -43,13 +43,13 @@ export const Footer: React.FC = () => {
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contact Us</h3>
             <ul className="space-y-3.5 text-sm text-slate-400">
-              <li className="flex items-center gap-2">
-                <MapPin className="h-4.5 w-4.5 text-primary shrink-0" />
-                <span>123 Market Street, San Francisco, CA</span>
+              <li className="flex items-start gap-2">
+                <MapPin className="h-4.5 w-4.5 text-primary shrink-0 mt-0.5" />
+                <span>Sri lanka 108 nagahawatta Road maharagama</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4.5 w-4.5 text-primary shrink-0" />
-                <span>+1 (555) 019-2834</span>
+                <span>0762127717</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4.5 w-4.5 text-primary shrink-0" />
