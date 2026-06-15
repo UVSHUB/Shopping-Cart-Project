@@ -85,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Pricing & Stock & CTA */}
         <div className="mt-auto pt-3 border-t border-app-border flex items-center justify-between gap-2">
           <div>
-            <span className="text-base font-bold text-app-text">${product.price.toFixed(2)}</span>
+            <span className="text-base font-bold text-app-text">Rs. {product.price.toFixed(2)}</span>
             <div className="flex items-center mt-0.5">
               {isOutOfStock ? (
                 <span className="text-[10px] font-medium text-red-500 flex items-center gap-0.5">

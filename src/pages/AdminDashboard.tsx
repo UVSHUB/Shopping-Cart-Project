@@ -328,7 +328,7 @@ export const AdminDashboard: React.FC = () => {
             <BarChart3 className="h-10 w-10 text-amber-500 shrink-0" />
             <div>
               <span className="text-xs text-gray-400 font-bold uppercase">Revenue</span>
-              <p className="text-xl font-extrabold text-primary">${stats.totalRevenue.toFixed(2)}</p>
+              <p className="text-xl font-extrabold text-primary">Rs. {stats.totalRevenue.toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -394,7 +394,7 @@ export const AdminDashboard: React.FC = () => {
                       </div>
                     </td>
                     <td className="p-4 font-medium text-gray-500">{prod.category}</td>
-                    <td className="p-4 font-bold text-app-text">${prod.price.toFixed(2)}</td>
+                    <td className="p-4 font-bold text-app-text">Rs. {prod.price.toFixed(2)}</td>
                     <td className="p-4">
                       {prod.stock === 0 ? (
                         <span className="text-red-500 font-semibold text-xs">Out of Stock</span>
@@ -521,7 +521,7 @@ export const AdminDashboard: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-gray-450 uppercase">Price ($)</label>
+              <label className="text-[10px] font-bold text-gray-450 uppercase">Price (Rs.)</label>
               <input
                 type="number"
                 step="0.01"

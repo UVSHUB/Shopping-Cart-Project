@@ -13,8 +13,8 @@ export const Checkout: React.FC = () => {
   // Form Fields
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.phone || '');
-  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState(user?.phone || '0762127717');
+  const [address, setAddress] = useState('Sri lanka 108 nagahawatta Road maharagama');
 
   const [paymentMethod, setPaymentMethod] = useState('test'); // default to test mode
   const [error, setError] = useState('');
@@ -26,7 +26,7 @@ export const Checkout: React.FC = () => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
-      setPhone(user.phone);
+      setPhone(user.phone || '0762127717');
     }
   }, [user]);
 
@@ -150,7 +150,7 @@ export const Checkout: React.FC = () => {
             </div>
             <div>
               <span className="text-gray-400">Grand Total:</span>
-              <p className="font-extrabold mt-0.5 text-primary">${orderSuccess.grandTotal.toFixed(2)}</p>
+              <p className="font-extrabold mt-0.5 text-primary">Rs. {orderSuccess.grandTotal.toFixed(2)}</p>
             </div>
           </div>
 
@@ -161,7 +161,7 @@ export const Checkout: React.FC = () => {
                 <span className="text-app-text">
                   {item.name} <strong className="text-gray-400">x{item.quantity}</strong>
                 </span>
-                <span className="font-semibold text-app-text">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-semibold text-app-text">Rs. {(item.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -307,7 +307,7 @@ export const Checkout: React.FC = () => {
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs font-semibold text-app-text truncate">{item.productId.name}</h4>
                   <span className="text-[10px] text-gray-500">
-                    Qty: {item.quantity} • ${(item.productId.price * item.quantity).toFixed(2)}
+                    Qty: {item.quantity} • Rs. {(item.productId.price * item.quantity).toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -318,23 +318,23 @@ export const Checkout: React.FC = () => {
           <div className="border-t border-app-border pt-4 space-y-3 text-sm text-gray-650 dark:text-gray-450">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold text-app-text">${subtotal.toFixed(2)}</span>
+              <span className="font-semibold text-app-text">Rs. {subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Sales Tax</span>
-              <span className="font-semibold text-app-text">${tax.toFixed(2)}</span>
+              <span className="font-semibold text-app-text">Rs. {tax.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery Fee</span>
               {deliveryFee === 0 ? (
                 <span className="font-semibold text-green-500">FREE</span>
               ) : (
-                <span className="font-semibold text-app-text">${deliveryFee.toFixed(2)}</span>
+                <span className="font-semibold text-app-text">Rs. {deliveryFee.toFixed(2)}</span>
               )}
             </div>
             <div className="border-t border-app-border pt-3 flex justify-between text-base font-extrabold text-app-text">
               <span>Grand Total</span>
-              <span>${grandTotal.toFixed(2)}</span>
+              <span>Rs. {grandTotal.toFixed(2)}</span>
             </div>
           </div>
 

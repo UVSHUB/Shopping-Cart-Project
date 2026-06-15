@@ -189,7 +189,7 @@ export const ProductList: React.FC = () => {
 
             {/* Price Slider */}
             <div>
-              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Max Price (${maxPrice})</h4>
+              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Max Price (Rs. {maxPrice})</h4>
               <input
                 type="range"
                 min="1"
@@ -200,8 +200,8 @@ export const ProductList: React.FC = () => {
                 className="w-full h-1.5 bg-gray-250 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1 font-medium">
-                <span>$1.00</span>
-                <span>$30.00</span>
+                <span>Rs. 1.00</span>
+                <span>Rs. 30.00</span>
               </div>
             </div>
 
@@ -276,7 +276,7 @@ export const ProductList: React.FC = () => {
 
             {/* Price Mobile */}
             <div>
-              <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Max Price: ${maxPrice}</h4>
+              <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Max Price: Rs. {maxPrice}</h4>
               <input
                 type="range"
                 min="1"

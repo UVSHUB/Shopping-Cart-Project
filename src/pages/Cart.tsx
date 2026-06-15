@@ -69,11 +69,11 @@ export const Cart: React.FC = () => {
                       <Link to={`/product/${item.productId._id}`}>{item.productId.name}</Link>
                     </h3>
                     <span className="text-sm sm:text-base font-bold text-app-text shrink-0">
-                      ${(item.productId.price * item.quantity).toFixed(2)}
+                      Rs. {(item.productId.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
 
-                  <span className="text-xs text-gray-500 mb-4">${item.productId.price.toFixed(2)} each</span>
+                  <span className="text-xs text-gray-500 mb-4">Rs. {item.productId.price.toFixed(2)} each</span>
 
                   {/* Quantity controls & Delete */}
                   <div className="flex items-center justify-between mt-auto">
@@ -118,30 +118,30 @@ export const Cart: React.FC = () => {
           <div className="space-y-3.5 text-sm">
             <div className="flex justify-between text-gray-600 dark:text-gray-400">
               <span>Subtotal</span>
-              <span className="font-semibold text-app-text">${subtotal.toFixed(2)}</span>
+              <span className="font-semibold text-app-text">Rs. {subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-gray-600 dark:text-gray-400">
               <span>Estimated Sales Tax (8%)</span>
-              <span className="font-semibold text-app-text">${tax.toFixed(2)}</span>
+              <span className="font-semibold text-app-text">Rs. {tax.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-gray-600 dark:text-gray-400">
               <span>Delivery Fee</span>
               {deliveryFee === 0 ? (
                 <span className="font-semibold text-green-500">FREE</span>
               ) : (
-                <span className="font-semibold text-app-text">${deliveryFee.toFixed(2)}</span>
+                <span className="font-semibold text-app-text">Rs. {deliveryFee.toFixed(2)}</span>
               )}
             </div>
 
             {deliveryFee > 0 && (
               <p className="text-[10px] text-green-500 font-semibold bg-green-500/10 p-2.5 rounded-xl border border-green-500/20">
-                🎉 Add <strong>${(50 - subtotal).toFixed(2)}</strong> more to unlock FREE Delivery!
+                🎉 Add <strong>Rs. {(50 - subtotal).toFixed(2)}</strong> more to unlock FREE Delivery!
               </p>
             )}
 
             <div className="border-t border-app-border pt-4 flex justify-between text-base font-extrabold text-app-text">
               <span>Grand Total</span>
-              <span>${grandTotal.toFixed(2)}</span>
+              <span>Rs. {grandTotal.toFixed(2)}</span>
             </div>
           </div>
 

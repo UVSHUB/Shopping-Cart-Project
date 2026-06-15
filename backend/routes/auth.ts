@@ -135,7 +135,7 @@ router.post('/oauth-login', async (req: Request, res: Response): Promise<any> =>
       user = new User({
         name,
         email,
-        phone: '0000000000', // default mock phone
+        phone: '0762127717', // default mock phone
         role
       });
       await user.save();
@@ -192,7 +192,7 @@ router.post('/google-login', async (req: Request, res: Response): Promise<any> =
       user = new User({
         name: name || email.split('@')[0],
         email,
-        phone: '0000000000', // default mock phone
+        phone: '0762127717', // default mock phone
         role
       });
       await user.save();
@@ -242,7 +242,7 @@ router.post('/facebook-login', async (req: Request, res: Response): Promise<any>
       user = new User({
         name: name || 'Facebook User',
         email: userEmail,
-        phone: '0000000000', // default mock phone
+        phone: '0762127717', // default mock phone
         role
       });
       await user.save();
@@ -280,7 +280,7 @@ router.post('/passkey/register-options', async (req: Request, res: Response): Pr
       user = new User({
         name: name || email.split('@')[0],
         email,
-        phone: '0000000000',
+        phone: '0762127717',
         role: email.toLowerCase().endsWith('@smartcart.admin') ? 'admin' : 'customer'
       });
       await user.save();

@@ -198,7 +198,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Calculations
   const subtotal = items.reduce((sum, item) => sum + item.productId.price * item.quantity, 0);
   const tax = subtotal * 0.08; // 8% sales tax
-  const deliveryFee = subtotal > 50 || subtotal === 0 ? 0 : 5.0; // Free delivery over $50
+  const deliveryFee = subtotal > 50 || subtotal === 0 ? 0 : 5.0; // Free delivery over Rs. 50
   const grandTotal = subtotal + tax + deliveryFee;
 
   return (

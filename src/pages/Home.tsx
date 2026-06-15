@@ -66,7 +66,7 @@ export const Home: React.FC = () => {
           <Truck className="h-8 w-8 text-primary shrink-0" />
           <div>
             <h4 className="text-sm font-semibold text-app-text">Free Delivery</h4>
-            <p className="text-xs text-gray-500 dark:text-gray-400">On all orders over $50</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">On all orders over Rs. 50</p>
           </div>
         </div>
         <div className="flex items-center gap-3.5 p-4 rounded-2xl glass-panel">
@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
             </span>
             <h3 className="text-2xl md:text-3xl font-extrabold text-app-text">Fresh Organic Strawberries</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Only this week, enjoy sweet vine-picked organic strawberries for just <strong className="text-primary">$2.99</strong> instead of $3.99.
+              Only this week, enjoy sweet vine-picked organic strawberries for just <strong className="text-primary">Rs. 2.99</strong> instead of Rs. 3.99.
             </p>
             <div className="flex items-center gap-3 mt-2">
               <button
